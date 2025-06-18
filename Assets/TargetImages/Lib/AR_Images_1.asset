@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 848409ee8ba454f42a5ddff137688a27, type: 3}
+  m_Name: AR_Images_1
+  m_EditorClassIdentifier: 
+  m_GuidLow: 5017052390278102129
+  m_GuidHigh: 3547805894953821342
+  m_DataStore:
+    m_Storage: []
+  m_Images:
+  - m_SerializedGuid:
+      m_GuidLow: 5111085200092840577
+      m_GuidHigh: 8401835388492343975
+    m_SerializedTextureGuid:
+      m_GuidLow: 11634067496425051712
+      m_GuidHigh: 1867652185474662458
+    m_Size: {x: 0.1, y: 0.100920245}
+    m_SpecifySize: 1
+    m_Name: ARImage01
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5166338890608830505
+      m_GuidHigh: 6337299968708481697
+    m_SerializedTextureGuid:
+      m_GuidLow: 6594566583811029370
+      m_GuidHigh: 7309817512998951626
+    m_Size: {x: 0.1, y: 0.10243902}
+    m_SpecifySize: 1
+    m_Name: ARImage02
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5649163937277650412
+      m_GuidHigh: 219894197204867511
+    m_SerializedTextureGuid:
+      m_GuidLow: 13151709885825993250
+      m_GuidHigh: 10844473959516697610
+    m_Size: {x: 0.1, y: 0.10150251}
+    m_SpecifySize: 1
+    m_Name: ARImage03
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5721221015152802329
+      m_GuidHigh: 11262351046133409716
+    m_SerializedTextureGuid:
+      m_GuidLow: 15133376727897816036
+      m_GuidHigh: 11048770744376324058
+    m_Size: {x: 0.1, y: 0.10261552}
+    m_SpecifySize: 1
+    m_Name: ARImage04
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 4873923802640671106
+      m_GuidHigh: 4142653186106513803
+    m_SerializedTextureGuid:
+      m_GuidLow: 17556240954496510340
+      m_GuidHigh: 14886754552871368921
+    m_Size: {x: 0.1, y: 0.098000005}
+    m_SpecifySize: 1
+    m_Name: ARImage05
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 4612596999655940984
+      m_GuidHigh: 10151034332952791708
+    m_SerializedTextureGuid:
+      m_GuidLow: 5914474325295759125
+      m_GuidHigh: 18435939229734108840
+    m_Size: {x: 0.1, y: 0.10016779}
+    m_SpecifySize: 1
+    m_Name: ARImage06
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5740255234698224586
+      m_GuidHigh: 4786759977649593265
+    m_SerializedTextureGuid:
+      m_GuidLow: 7283683030550605608
+      m_GuidHigh: 8824366591338645481
+    m_Size: {x: 0.1, y: 0.101845995}
+    m_SpecifySize: 1
+    m_Name: ARImage07
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5350053047480605872
+      m_GuidHigh: 10095167862526721175
+    m_SerializedTextureGuid:
+      m_GuidLow: 4365126532966658777
+      m_GuidHigh: 5666674522603934633
+    m_Size: {x: 0.1, y: 0.10206541}
+    m_SpecifySize: 1
+    m_Name: ARImage08
+    m_Texture: {fileID: 0}
