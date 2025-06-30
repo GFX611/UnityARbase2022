@@ -57,3 +57,13 @@ MonoBehaviour:
     m_SpecifySize: 1
     m_Name: Mark4
     m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 4897684031540821595
+      m_GuidHigh: 3193907710908247721
+    m_SerializedTextureGuid:
+      m_GuidLow: 6225362293859126757
+      m_GuidHigh: 5901095425990619065
+    m_Size: {x: 0.072, y: 0.072}
+    m_SpecifySize: 1
+    m_Name: Mark5
+    m_Texture: {fileID: 0}

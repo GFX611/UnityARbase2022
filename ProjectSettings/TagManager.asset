@@ -13,6 +13,7 @@ TagManager:
   - At4
   - PlayerAct
   - MoveZone
+  - Debug
   layers:
   - Default
   - TransparentFX
