@@ -21,9 +21,9 @@ MonoBehaviour:
       m_GuidLow: 5447116317553118892
       m_GuidHigh: 17918439026969774996
     m_SerializedTextureGuid:
-      m_GuidLow: 6594566583811029370
-      m_GuidHigh: 7309817512998951626
-    m_Size: {x: 0.1, y: 0.10243902}
+      m_GuidLow: 9530843265276826860
+      m_GuidHigh: 5310072049466381259
+    m_Size: {x: 0.1, y: 0.1}
     m_SpecifySize: 1
     m_Name: Mark1
     m_Texture: {fileID: 0}
@@ -31,9 +31,9 @@ MonoBehaviour:
       m_GuidLow: 5669482944784786960
       m_GuidHigh: 8972566075269781390
     m_SerializedTextureGuid:
-      m_GuidLow: 15133376727897816036
-      m_GuidHigh: 11048770744376324058
-    m_Size: {x: 0.1, y: 0.10261552}
+      m_GuidLow: 6590115982070431555
+      m_GuidHigh: 16033286765633677528
+    m_Size: {x: 0.1, y: 0.1}
     m_SpecifySize: 1
     m_Name: Mark2
     m_Texture: {fileID: 0}

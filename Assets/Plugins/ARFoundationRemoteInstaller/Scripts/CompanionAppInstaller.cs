@@ -22,9 +22,9 @@ namespace ARFoundationRemote.Editor {
 
 
         int IOrderedCallback.callbackOrder => 0;
-        
+
         void IPreprocessBuildWithReport.OnPreprocessBuild(BuildReport report) {
-            log($"CompanionAppInstaller IPreprocessBuildWithReport.OnPreprocessBuild, isBuildingCompanionApp(report): {isBuildingCompanionApp(report)}, defines: {PlayerSettings.GetScriptingDefineSymbolsForGroup(activeBuildTargetGroup)}, isCloudBuild: {isCloudBuild}");
+            log($"CompanionAppInstaller IPreprocessBuildWithReport.OnPreprocessBuild, isBuildingCompanionApp(report): {isBuildingCompanionApp(report)}, defines: {scriptingDefineSymbols}, isCloudBuild: {isCloudBuild}");
             if (isCloudBuild && isARCompanionDefineSet) {
                 var settings = new InstallerSettings {
                     modifyAppId = false,
@@ -73,33 +73,64 @@ namespace ARFoundationRemote.Editor {
         }
 
         static void toggleDefine(string define, bool enable) {
-            var buildTargetGroup = activeBuildTargetGroup;
             if (enable) {
                 if (isDefineSet(define)) {
                     return;
                 }
 
-                var defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup);
+                var defines = scriptingDefineSymbols;
                 setDefines($"{defines};{define}");
             } else {
                 if (!isDefineSet(define)) {
                     return;
                 }
 
-                var defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup).Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries);
+                var defines = scriptingDefineSymbols.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries);
                 setDefines(string.Join(";", defines.Where(d => d.Trim() != define).ToArray()));
             }
-            
+
             void setDefines(string defines) {
                 log($"set defines: {defines}");
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, defines);
+                scriptingDefineSymbols = defines;
             }
         }
 
-        internal static BuildTargetGroup activeBuildTargetGroup => BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
+        static string scriptingDefineSymbols {
+            get {
+                #if UNITY_2023_1_OR_NEWER
+                return PlayerSettings.GetScriptingDefineSymbols(activeBuildTargetGroup);
+                #else
+                return PlayerSettings.GetScriptingDefineSymbolsForGroup(activeBuildTargetGroup);
+                #endif
+            }
+            set {
+                #if UNITY_2023_1_OR_NEWER
+                PlayerSettings.SetScriptingDefineSymbols(activeBuildTargetGroup, value);
+                #else
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(activeBuildTargetGroup, value);
+                #endif
+            }
+        }
+
+        static
+            #if UNITY_2023_1_OR_NEWER
+            NamedBuildTarget
+            #else
+            BuildTargetGroup
+            #endif
+            activeBuildTargetGroup {
+            get {
+                var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
+                #if UNITY_2023_1_OR_NEWER
+                return NamedBuildTarget.FromBuildTargetGroup(buildTargetGroup);
+                #else
+                return buildTargetGroup;
+                #endif
+            }
+        }
 
         static bool isDefineSet(string define) {
-            return PlayerSettings.GetScriptingDefineSymbolsForGroup(activeBuildTargetGroup).Contains(define);
+            return scriptingDefineSymbols.Contains(define);
         }
 
         static bool isCloudBuild {
@@ -121,7 +152,7 @@ namespace ARFoundationRemote.Editor {
                 #endif
             }
         }
-        
+
         /// returns false in UCB because <see cref="companionAppFolder"/> path is not used while building with UCB
         static bool isBuildingCompanionApp(BuildReport report) {
             var result = report.summary.outputPath.Contains(companionAppFolder);
@@ -142,10 +173,6 @@ namespace ARFoundationRemote.Editor {
         }
 
         static bool prepareBuild(InstallerSettings settings) {
-            if (!isAnyLoaderEnabledForCurrentPlatform()) {
-                Debug.LogError("Please install the ARCore/ARKit provider and enable it in the 'XR Plug-in Management' window.");
-                return false;
-            }
             var listRequest = Client.List(true, true);
             ARFoundationRemoteInstaller.runPackageManagerRequestBlocking(listRequest);
             if (listRequest.Status != StatusCode.Success) {
@@ -164,29 +191,46 @@ namespace ARFoundationRemote.Editor {
                 Debug.LogError($"{Constants.packageName}: please switch Unity Editor to supported build target (iOS/Android). Or enable the '{settingName}' in plugin's debug settings.\n");
                 return false;
             }
-            
+
             var instance = Settings.Instance;
             instance.packages = PackageVersionData.Create(listRequest.Result);
             instance.inputHandlingData = InputHandlingData.Create();
             EditorUtility.SetDirty(instance);
-            
+
             if (Defines.isAndroid) {
                 if (!isPresent("com.unity.xr.arcore")) {
-                    logPluginNotInstalledError("ARCore XR Plugin");
+                    logPluginNotInstalledError("ARCore");
                     return false;
                 }
             } else if (Defines.isIOS) {
                 if (!isPresent("com.unity.xr.arkit") && !isPresent("com.unity.xr.arkit-face-tracking")) {
-                    logPluginNotInstalledError("ARKit XR Plugin");
+                    logPluginNotInstalledError("ARKit");
                     return false;
                 }
+            }
+            if (!isAnyLoaderEnabledForCurrentPlatform()) {
+                string providerName;
+                var activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
+                switch (activeBuildTarget) {
+                    case BuildTarget.Android:
+                        providerName = "ARCore";
+                        break;
+                    case BuildTarget.iOS:
+                        providerName = "ARKit";
+                        break;
+                    default:
+                        providerName = "AR Provider";
+                        break;
+                }
+                Debug.LogError($"Please enable '{providerName}' in the 'XR Plug-in Management' window. Or switch the 'Build Setting/Platform' to another target. Current build target: {activeBuildTarget}.\n");
+                return false;
             }
 
             void logPluginNotInstalledError(string packageName) {
                 Debug.LogError($"Please install '{packageName}' via Package Manager and ENABLE IT in 'XR Plug-in Management' window.");
             }
             #endif
-            
+
             bool isPresent(string packageId) {
                 return listRequest.Result.SingleOrDefault(_ => _.name == packageId) != null;
             }
@@ -210,7 +254,7 @@ namespace ARFoundationRemote.Editor {
             if (!EditorBuildSettings.TryGetConfigObject(UnityEngine.XR.Management.XRGeneralSettings.k_SettingsKey, out UnityEditor.XR.Management.XRGeneralSettingsPerBuildTarget buildTargetSettings)) {
                 return false;
             }
-            var settings = buildTargetSettings.SettingsForBuildTarget(activeBuildTargetGroup);
+            var settings = buildTargetSettings.SettingsForBuildTarget(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget));
             if (settings == null) {
                 return false;
             }
@@ -224,7 +268,7 @@ namespace ARFoundationRemote.Editor {
             }
             // Debug.Log($"loaders: {string.Join(", ", loaders)}");
             return loaders.Count > 0;
-            
+
             IReadOnlyList<UnityEngine.XR.Management.XRLoader> getLoaders() {
                 return manager.
                     #if XR_MANAGEMENT_4_0_1_OR_NEWER
@@ -291,8 +335,8 @@ namespace ARFoundationRemote.Editor {
                 Directory.Delete(path, true);
             }
         }
-        
-        
+
+
         [Conditional("_")]
         static void log(string msg) {
             Debug.Log(msg);

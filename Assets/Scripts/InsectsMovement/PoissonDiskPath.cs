@@ -27,35 +27,41 @@ public class PoissonDiskPath: MonoBehaviour
     public int divisions = 3; // Number of divisions for the Chaikin's algorithm
     private static int max;
 
-    void Awake()
+    void Start()
     {
+      StartCoroutine(DelayCurveCreation(2f)); // Start the coroutine to create curves after a delay
+
+    }
+
+    IEnumerator DelayCurveCreation(float delay)
+    {
+        yield return new WaitForSeconds(delay); // Wait for the specified delay
+        
         curveSmooth = curveSmoothRatio; // Set the curve smooth ratio
         curves = new List<List<Vector3>>(); // Initialize the list of curves
         boxBounds = volumeObject.GetComponent<MeshRenderer>().bounds; // Get the bounds of the mesh renderer
 
         //someObject = GameObject.CreatePrimitive(PrimitiveType.Cube); // Example object to instantiate
-        
+
 
         size = boxBounds.size; // Get the size of the bounds
-        
+
         //volumeObject.GetComponent<MeshRenderer>().enabled = false; // Disable the mesh renderer after sampling
         samples = initializePoissonDisk(); // Initialize the Poisson disk samples
         remainingPoints = initializePoissonDisk();
 
-        max = Mathf.FloorToInt(samples.Count/numberOfPoints); // Calculate the maximum number of curves to create based on the number of points
-        
+        max = Mathf.FloorToInt(samples.Count / numberOfPoints); // Calculate the maximum number of curves to create based on the number of points
+
         for (int i = 0; i < max; i++)
         {
-            
-      
+
+
             createCurve(); // Create the curve at the center of the bounds
         }
         freeCurves = curves; // Store the curves that have been created
 
         vizualizeCurves(); // Visualize the curves created
-
     }
-
 
     void createCurve()
     {
@@ -87,7 +93,7 @@ public class PoissonDiskPath: MonoBehaviour
     {
         for (int i =0; i<curves.Count;i++)
         {
-            Debug.Log("Curve " + i + " has " + curves[i].Count + " points.");
+            //Debug.Log("Curve " + i + " has " + curves[i].Count + " points.");
             hue = Color.HSVToRGB((float)i /curves.Count,1f,1f); // Use black color for curves that are not taken
                 vizualizeCurve(curves[i]); // Visualize the curve
         }

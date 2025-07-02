@@ -85,7 +85,7 @@ Yes! Please ensure that your projects:
 **How to connect an AR device to Unity Editor by wire?**  
  - iOS + macOS: One of the IP addresses displayed in the AR Companion app is an IP of a wired connection.            
  Please disable Wi-Fi, and there should be one IP left that corresponds to the wired connection.  
- - iOS + Windows: https://forum.unity.com/threads/ar-foundation-editor-remote-test-and-debug-your-ar-project-in-the-editor.898433/page-9#post-6849035  
+ - iOS + Windows: https://discussions.unity.com/t/ar-foundation-remote-test-and-debug-your-ar-project-in-the-editor/792788/437  
  - Android + macOS/Windows:  
    Launch the AR Companion app on your Android device. Open the adb tool and execute the following command:  
    adb forward tcp:44819 tcp:44819  

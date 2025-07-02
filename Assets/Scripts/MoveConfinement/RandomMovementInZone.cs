@@ -23,23 +23,8 @@ public class RandomMovementInZone : MonoBehaviour
     private float nextDirectionChangeTime;
     private bool isTurningBack = false;
     private bool isSearchingForZone = false;
-
-    private void OnEnable()
-    {
-        if (searchForZoneAtStart)
-        {
-            FindMoveZoneByTag();
-        }
-
-        if (moveZoneCollider != null)
-        {
-            InitializeMovement();
-        }
-        else
-        {
-            StartCoroutine(PeriodicZoneSearch());
-        }
-    }
+    private Animator animator; // Animator for the insect
+    private bool isWalking = false; // Flag to check if the insect is walking
 
     private void FindMoveZoneByTag()
     {
@@ -86,9 +71,40 @@ public class RandomMovementInZone : MonoBehaviour
         }
     }
 
+    IEnumerator DelayWalking(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        isWalking = true; // Set walking flag to true after the delay
+        animator.SetTrigger("isWalking"); // Trigger the walking animation
+    }
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+        if (searchForZoneAtStart)
+        {
+            FindMoveZoneByTag();
+        }
+
+        if (moveZoneCollider != null)
+        {
+            InitializeMovement();
+        }
+        else
+        {
+            StartCoroutine(PeriodicZoneSearch());
+        }
+
+        StartCoroutine(DelayWalking(5f +Random.Range(0f, 1f))); // Random delay before starting movement
+
+    }
+
     private void Update()
     {
         if (moveZoneCollider == null) return;
+
+        if (!isWalking) return;
+
 
         if (Time.time >= nextDirectionChangeTime && !isTurningBack)
         {
