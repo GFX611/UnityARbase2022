@@ -20,11 +20,10 @@ public class FlyingToCurve : MonoBehaviour
 
     private bool isFlying = false; // Flag to check if the insect is flying
 
+
+
     void Start()
     {
-
-        direction = transform.forward.normalized;
-        
         StartCoroutine(WakingUp(5f)); // Start waking up coroutine
        
     }
@@ -33,9 +32,17 @@ public class FlyingToCurve : MonoBehaviour
     {
         if (isFlying)
         {
+            Vector3 dir;
+            if (currentCurveIndex == nearestPointIndex) { 
+                dir = curve[nearestPointIndex] - transform.position; // Calculate direction to the next point in the curve
+                dir.Normalize(); // Normalize the direction vector
+
+            }
+            else
+            {
+                dir = curve[(currentCurveIndex + 1) % (steps)] - curve[currentCurveIndex];
+            }
             
-        
-            Vector3 dir = curve[(currentCurveIndex + 1) % (steps)] - curve[currentCurveIndex];
 
             if (Vector3.Distance(transform.position, curve[currentCurveIndex]) < 0.1f) currentCurveIndex++;
             if (currentCurveIndex >= steps) currentCurveIndex = 0; // Reset counter if it exceeds the number of steps
