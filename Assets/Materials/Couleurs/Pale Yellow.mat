@@ -23,7 +23,7 @@ Material:
   m_Name: Pale Yellow
   m_Shader: {fileID: -6465566751694194690, guid: d6d01cf9b087b0445bec00cadb9051ce,
     type: 3}
-  m_Parent: {fileID: 2100000, guid: 84d2d73bfee4c6f4cb8e18ae1d56e806, type: 2}
+  m_Parent: {fileID: 2100000, guid: de78392c666ed344ab31f2591f35b5f1, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -42,3 +42,4 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 0.8816678, b: 0.5330188, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1

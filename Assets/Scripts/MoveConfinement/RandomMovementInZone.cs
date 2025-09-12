@@ -74,13 +74,42 @@ public class RandomMovementInZone : MonoBehaviour
     IEnumerator DelayWalking(float delay)
     {
         yield return new WaitForSeconds(delay);
+        if (TryGetComponent(out AudioSource audioSource))
+        {
+            audioSource.playOnAwake = true;
+            audioSource.Play();
+
+        }
         isWalking = true; // Set walking flag to true after the delay
         animator.SetTrigger("isWalking"); // Trigger the walking animation
     }
 
     private void Start()
     {
+        if (TryGetComponent( out AudioSource audioSource))
+        {
+            audioSource.playOnAwake = false;
+            
+        }
+        
+
+
         animator = GetComponent<Animator>();
+        if (TryGetComponent<Animator>(out Animator anim))
+        {
+            animator = anim;
+        }
+        else
+        {
+            
+                animator = GetComponentInChildren<Animator>();
+                if (animator == null)
+                {
+                    Debug.LogWarning("No Animator component found on the insect or its children.");
+            }
+
+        }
+
         if (searchForZoneAtStart)
         {
             FindMoveZoneByTag();

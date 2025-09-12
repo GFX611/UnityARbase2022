@@ -6,3 +6,10 @@ NativeFormatImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 201106
+  packageName: AR Foundation Remote 2.0
+  packageVersion: 2.0.40-release.0
+  assetPath: Assets/Plugins/ARFoundationRemoteInstaller/Resources/ObjectTrackingLibraries.asset
+  uploadId: 749289

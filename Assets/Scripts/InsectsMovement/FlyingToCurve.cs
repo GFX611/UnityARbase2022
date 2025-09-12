@@ -24,6 +24,11 @@ public class FlyingToCurve : MonoBehaviour
 
     void Start()
     {
+        if (TryGetComponent(out AudioSource audioSource))
+        {
+            audioSource.playOnAwake = false;
+
+        }
         StartCoroutine(WakingUp(5f)); // Start waking up coroutine
        
     }
@@ -60,7 +65,12 @@ public class FlyingToCurve : MonoBehaviour
     IEnumerator WakingUp(float wakingTime)
     {
         yield return new WaitForSeconds(wakingTime+Random.Range(0f,1f)); // Wait for 0.5 seconds before starting to move
+        if (TryGetComponent(out AudioSource audioSource))
+        {
+            audioSource.playOnAwake = true;
+            audioSource.Play();
 
+        }
         FindCurve(); // Find a curve to follow at the start
         animator.SetTrigger("isFlying"); // Set the animator parameter to start waking up animation
         isFlying = true; // Set the flag to true to indicate the insect is now flying
